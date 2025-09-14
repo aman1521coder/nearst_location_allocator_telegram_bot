@@ -5,19 +5,27 @@ MAP_API=`https://maps.googleapis.com/maps/api/place/nearbysearch/json`
 //getting a nerast location from google api
 
 async function getNearstPlace(location,type,keywword,radius){
-    try{   
-    const res=axios.get(`${MAP_API}?location=${location}&radius=${radius}&type=${type}&keyword=${keywword}&key=${MAP_KEY}`)
-    if (res.status!==200){
-        throw new Error(`Error fetching data from Google Maps API: ${res.statusText}`)
-    }
+    try{    
+    const res = await axios.get(MAP_API, {
+      params: {
+        location,
+        radius,
+        type,
+        keyword,
+        key: MAP_KEY,
+      },
+    });
+
       return res.data
 
 }catch(error){
+    if (error.response){
     console.error('Error fetching data from Google Maps API:',error)
     throw error
 }
   
 
+}
 }
 module.exports={getNearstPlace}
 
